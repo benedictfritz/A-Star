@@ -115,8 +115,5 @@ var Grid = function(ctx, width, height) {
 	    }
 	}
     };
-
-    // initial clear
-    this.clear();
 };
 Grid.prototype = new Entity;
