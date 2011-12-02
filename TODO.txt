@@ -2,3 +2,7 @@ TODO:
 
 - Look at Palette for how to draw a thing for changing the context's drawing color
 - Need to create palette colors for walls, the start point and the end point
+
+NOTES:
+
+- fillStyle is stored as string ("#ff0000")

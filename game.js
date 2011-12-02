@@ -1,5 +1,5 @@
 var g_eng, g_game;
-var grid, palette;
+var g_grid, wallbutton, endbutton, startbutton;
 var lastRender, loopStart, updateFinish, renderFinish;
 var statsOn = false;
 var targetFPS = 30;
@@ -8,19 +8,29 @@ function startGame() {
     g_eng = new Eng();
     g_eng.initialize();
 
-    grid = new Grid(g_eng.ctx, 640, 480);
-    g_eng.objectManager.objects.push(grid);
+    g_grid = new Grid(g_eng.ctx, 640, 480);
+    g_eng.objectManager.objects.push(g_grid);
+
+    wallbutton = new WallButton(g_eng.ctx);
+    wallbutton.y = 480;
+    g_eng.objectManager.objects.push(wallbutton);
+
+    startbutton = new StartButton(g_eng.ctx);
+    startbutton.x = wallbutton.sideLength;
+    startbutton.y = 480;
+    g_eng.objectManager.objects.push(startbutton);
     
-    palette = new Palette(g_eng.ctx);
-    palette.y = 480;
-    g_eng.objectManager.objects.push(palette);
+    endbutton = new EndButton(g_eng.ctx);
+    endbutton.x = wallbutton.sideLength + startbutton.sideLength;
+    endbutton.y = 480;
+    g_eng.objectManager.objects.push(endbutton);
 
     g_game = new Game;
     g_game.start();
 }
 
 function eraseGrid() {
-    grid.clear();
+    g_grid.clear();
 }
 
 function Game() {

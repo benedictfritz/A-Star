@@ -1,3 +1,9 @@
+var EMPTY = 0;
+var WALL = 1;
+var START = 2;
+var END = 3;
+var BLOCK_TYPE = WALL;
+
 var Grid = function(ctx, width, height) {    
     // round the shit out of everything. pixels don't have fractions.
     // of course, this means that our drawing isn't the exact size we told it to
@@ -14,15 +20,15 @@ var Grid = function(ctx, width, height) {
     this.numRows = Math.floor(this.height/this.squareLength);
     for (var i=0; i < this.squares.length; i++) {
 	this.squares[i] = new Array(this.numRows);
-
-	// initialize all values in the grid to 0 representing that nothing
-	// is drawn there right now
 	for(var j=0; j < this.numRows; j++) {
-	    this.squares[i][j] = 0;
+	    this.squares[i][j] = EMPTY;
 	}
     }
 
     this.draw = function() {
+	var oldFillStyle;
+	oldFillStyle = this.ctx.fillStyle;
+	this.ctx.fillStyle = "rgb(255, 0, 0)";
 	var maxHorizontal = this.numColumns * this.squareLength;
 	var maxVertical = this.numRows * this.squareLength;
 
@@ -42,13 +48,41 @@ var Grid = function(ctx, width, height) {
 	    this.ctx.lineTo(maxHorizontal, Math.floor(i));
 	    this.ctx.stroke();
 	}
+	this.ctx.fillStyle = oldFillStyle;
 
 	for (var column = 0; column < this.numColumns; column++) {
 	    for (var row = 0; row < this.numRows; row++) {
-		if (this.squares[column][row] == 1) {
+		if (this.squares[column][row] == EMPTY) {
+		    oldFillStyle = this.ctx.fillStyle;
+		    this.ctx.fillStyle = "rgb(255, 255, 255)";
+		    this.ctx.fillRect(this.x + column * this.squareLength + 1, 
+				      row * this.squareLength + 1, 
+				      this.squareLength-2, this.squareLength-2);
+		    this.ctx.fillStyle = oldFillStyle;
+		}
+		else if (this.squares[column][row] == WALL) {
+		    oldFillStyle = this.ctx.fillStyle;
+		    this.ctx.fillStyle = "rgb(0, 0, 0)";
 		    this.ctx.fillRect(this.x + column * this.squareLength, 
 				      row * this.squareLength, 
 				      this.squareLength, this.squareLength);
+		    this.ctx.fillStyle = oldFillStyle;
+		}
+		else if (this.squares[column][row] == START) {
+		    oldFillStyle = this.ctx.fillStyle;
+		    this.ctx.fillStyle = "rgb(0, 255, 0)";
+		    this.ctx.fillRect(this.x + column * this.squareLength, 
+				      row * this.squareLength, 
+				      this.squareLength, this.squareLength);
+		    this.ctx.fillStyle = oldFillStyle;
+		}
+		else if (this.squares[column][row] == END) {
+		    oldFillStyle = this.ctx.fillStyle;
+		    this.ctx.fillStyle = "rgb(255, 0, 0)";
+		    this.ctx.fillRect(this.x + column * this.squareLength, 
+				      row * this.squareLength, 
+				      this.squareLength, this.squareLength);
+		    this.ctx.fillStyle = oldFillStyle;
 		}
 	    }
 	}
@@ -66,10 +100,10 @@ var Grid = function(ctx, width, height) {
 	    var row = Math.floor(mouse.y / this.squareLength);
 
 	    if (mouse.leftPressed) {
-		this.squares[column][row] = 1;
+		this.squares[column][row] = BLOCK_TYPE;
 	    }
 	    if (mouse.rightPressed) {
-		this.squares[column][row] = 0;
+		this.squares[column][row] = EMPTY;
 	    }
 	}
     };
@@ -77,9 +111,12 @@ var Grid = function(ctx, width, height) {
     this.clear = function() {
 	for (var column = 0; column < this.numColumns; column++) {
 	    for (var row = 0; row < this.numRows; row++) {
-		this.squares[column][row] = 0;
+		this.squares[column][row] = this.EMPTY;
 	    }
 	}
     };
+
+    // initial clear
+    this.clear();
 };
 Grid.prototype = new Entity;
