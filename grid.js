@@ -4,6 +4,8 @@ var START = 2;
 var END = 3;
 var BLOCK_TYPE = WALL;
 
+var startSquare;
+
 var Grid = function(ctx, width, height) {    
     // round the shit out of everything. pixels don't have fractions.
     // of course, this means that our drawing isn't the exact size we told it to
@@ -13,11 +15,10 @@ var Grid = function(ctx, width, height) {
     
     this.ctx = ctx;
     this.squareLength = 20;
-
     this.numColumns = Math.floor(this.width/this.squareLength);
     this.squares = new Array(this.numColumns);
-
     this.numRows = Math.floor(this.height/this.squareLength);
+
     for (var i=0; i < this.squares.length; i++) {
 	this.squares[i] = new Array(this.numRows);
 	for(var j=0; j < this.numRows; j++) {
@@ -68,14 +69,6 @@ var Grid = function(ctx, width, height) {
 				      this.squareLength, this.squareLength);
 		    this.ctx.fillStyle = oldFillStyle;
 		}
-		else if (this.squares[column][row] == START) {
-		    oldFillStyle = this.ctx.fillStyle;
-		    this.ctx.fillStyle = "rgb(0, 255, 0)";
-		    this.ctx.fillRect(this.x + column * this.squareLength, 
-				      row * this.squareLength, 
-				      this.squareLength, this.squareLength);
-		    this.ctx.fillStyle = oldFillStyle;
-		}
 		else if (this.squares[column][row] == END) {
 		    oldFillStyle = this.ctx.fillStyle;
 		    this.ctx.fillStyle = "rgb(255, 0, 0)";
@@ -85,6 +78,16 @@ var Grid = function(ctx, width, height) {
 		    this.ctx.fillStyle = oldFillStyle;
 		}
 	    }
+	}
+
+	// fill in start square
+	if (startSquare) {
+	    oldFillStyle = this.ctx.fillStyle;
+	    this.ctx.fillStyle = "rgb(0, 255, 0)";
+	    this.ctx.fillRect(this.x + startSquare.x * this.squareLength, 
+			      startSquare.y * this.squareLength, 
+			      this.squareLength, this.squareLength);
+	    this.ctx.fillStyle = oldFillStyle;
 	}
     };
 
@@ -98,8 +101,18 @@ var Grid = function(ctx, width, height) {
 	if (clickInGridX > 0 && clickInGridY > 0) {
 	    var column = Math.floor(clickInGridX / this.squareLength);
 	    var row = Math.floor(mouse.y / this.squareLength);
-
+	    
 	    if (mouse.leftPressed) {
+		if (BLOCK_TYPE == START) {
+		    if (startSquare) {
+			this.squares[startSquare.x][startSquare.y] = EMPTY;
+		    }
+		    else {
+		    }
+		    startSquare = new Point(column, row);
+		}
+		else {
+		}
 		this.squares[column][row] = BLOCK_TYPE;
 	    }
 	    if (mouse.rightPressed) {

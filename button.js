@@ -8,13 +8,19 @@ var Button =  function() {
 
     this.update = function() {
 	var mouse = g_eng.mouse;
-
 	var clickInX = mouse.x - this.x;
 	var clickInY = mouse.y - this.y;
 
 	// if both the x and y are within the grid, proceed
-	if (clickInX > 0 && clickInY > 0) {	
-	    BLOCK_TYPE = this.blockIdentifier;
+	if (clickInX > 0 && clickInY > 0) {
+	    if (clickInX < this.sideLength && clickInY < this.sideLength) {
+		if (mouse.leftPressed || mouse.rightPressed) {
+		    if (this.blockIdentifier == END) {
+			console.log("break here");
+		    }
+		    BLOCK_TYPE = this.blockIdentifier;
+		}
+	    }
 	}
     };
 };
