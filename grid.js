@@ -4,7 +4,7 @@ var START = 2;
 var END = 3;
 var BLOCK_TYPE = WALL;
 
-var startSquare;
+var startSquare, endSquare;
 
 var Grid = function(ctx, width, height) {    
     // round the shit out of everything. pixels don't have fractions.
@@ -80,12 +80,20 @@ var Grid = function(ctx, width, height) {
 	    }
 	}
 
-	// fill in start square
+	// fill in start and end squares
 	if (startSquare) {
 	    oldFillStyle = this.ctx.fillStyle;
 	    this.ctx.fillStyle = "rgb(0, 255, 0)";
 	    this.ctx.fillRect(this.x + startSquare.x * this.squareLength, 
 			      startSquare.y * this.squareLength, 
+			      this.squareLength, this.squareLength);
+	    this.ctx.fillStyle = oldFillStyle;
+	}
+	if (endSquare) {
+	    oldFillStyle = this.ctx.fillStyle;
+	    this.ctx.fillStyle = "rgb(255, 0, 0)";
+	    this.ctx.fillRect(this.x + endSquare.x * this.squareLength, 
+			      endSquare.y * this.squareLength, 
 			      this.squareLength, this.squareLength);
 	    this.ctx.fillStyle = oldFillStyle;
 	}
@@ -98,7 +106,8 @@ var Grid = function(ctx, width, height) {
 	var clickInGridY = mouse.y - this.y;
 
 	// if both the x and y are within the grid, proceed
-	if (clickInGridX > 0 && clickInGridY > 0) {
+	if (clickInGridX > 0 && clickInGridY > 0
+	   && clickInGridX < this.width && clickInGridY < this.height) {
 	    var column = Math.floor(clickInGridX / this.squareLength);
 	    var row = Math.floor(mouse.y / this.squareLength);
 	    
@@ -107,21 +116,34 @@ var Grid = function(ctx, width, height) {
 		    if (startSquare) {
 			this.squares[startSquare.x][startSquare.y] = EMPTY;
 		    }
-		    else {
-		    }
 		    startSquare = new Point(column, row);
 		}
-		else {
+		if (BLOCK_TYPE == END) {
+		    if (endSquare) {
+			this.squares[endSquare.x][endSquare.y] = EMPTY;
+		    }
+		    endSquare = new Point(column, row);
 		}
 		this.squares[column][row] = BLOCK_TYPE;
 	    }
 	    if (mouse.rightPressed) {
+		if (startSquare && startSquare.x == column 
+		    && startSquare.y == row) {
+		    startSquare = null;
+		}
+		if (endSquare && endSquare.x == column 
+		    && endSquare.y == row) {
+		    endSquare = null;
+		}
+
 		this.squares[column][row] = EMPTY;
 	    }
 	}
     };
 
     this.clear = function() {
+	startSquare = null;
+	endSquare = null;
 	for (var column = 0; column < this.numColumns; column++) {
 	    for (var row = 0; row < this.numRows; row++) {
 		this.squares[column][row] = this.EMPTY;

@@ -15,9 +15,6 @@ var Button =  function() {
 	if (clickInX > 0 && clickInY > 0) {
 	    if (clickInX < this.sideLength && clickInY < this.sideLength) {
 		if (mouse.leftPressed || mouse.rightPressed) {
-		    if (this.blockIdentifier == END) {
-			console.log("break here");
-		    }
 		    BLOCK_TYPE = this.blockIdentifier;
 		}
 	    }
