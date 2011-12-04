@@ -21,4 +21,4 @@ var Button =  function() {
 	}
     };
 };
-Button.prototype = new Entity;
+Button.prototype = new Entity();

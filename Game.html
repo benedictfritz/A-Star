@@ -1,6 +1,7 @@
 <html>
   <head>
     <link rel="stylesheet" type="text/css" href="style.css" />
+    <script type="text/javascript" src="jquery/jquery-1.7.1.min.js"></script>
     <script type="text/javascript" src="engine/util.js"></script>
     <script type="text/javascript" src="engine/eng.js"></script>
     <script type="text/javascript" src="engine/entity.js"></script>
@@ -9,6 +10,8 @@
     <script type="text/javascript" src="wallbutton.js"></script>
     <script type="text/javascript" src="startbutton.js"></script>
     <script type="text/javascript" src="endbutton.js"></script>
+    <script type="text/javascript" src="astar.js"></script>
+    <script type="text/javascript" src="node.js"></script>
     <script type="text/javascript" src="game.js"></script>
   </head>
 
@@ -17,5 +20,6 @@
       <canvas id="canvas" width="640" height="520"></canvas>
     </div>
     <button type="button" onclick="eraseGrid()">Clear!</button>
+    <button type="button" onclick="findPath()">Find path!</button>
   </body>
 </html>

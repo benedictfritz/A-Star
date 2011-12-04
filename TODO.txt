@@ -1,6 +1,10 @@
 TODO:
 
-- Figure out why the startsquare is disappearing mysteriously when switching buttons
+- Implement G and H calculations
+  => G = parent's G plus new node's movement cost (10 or 14)
+  => H = x distance + y distance to target square
+EZPZ!
+
 
 NOTES:
 
