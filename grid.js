@@ -2,6 +2,7 @@ var EMPTY = 0;
 var WALL = 1;
 var START = 2;
 var END = 3;
+var PATH = 4;
 var BLOCK_TYPE = WALL;
 
 var startSquare, endSquare;
@@ -69,9 +70,9 @@ var Grid = function(ctx, width, height) {
 				      this.squareLength, this.squareLength);
 		    this.ctx.fillStyle = oldFillStyle;
 		}
-		else if (this.squares[column][row] == END) {
+		else if (this.squares[column][row] == PATH) {
 		    oldFillStyle = this.ctx.fillStyle;
-		    this.ctx.fillStyle = "rgb(255, 0, 0)";
+		    this.ctx.fillStyle = "rgb(0, 0, 255)";
 		    this.ctx.fillRect(this.x + column * this.squareLength, 
 				      row * this.squareLength, 
 				      this.squareLength, this.squareLength);
