@@ -41,52 +41,36 @@ function findPath() {
 	    return;
 	}
     }
-    console.log("nothin");
+    alert("No possible path found!");
 }
 
 function addAdjacentNodesToList(node, openList, closedList) {
     var x, y;
     
     // start at the block to the left and check clockwise
+    // this is the area where you would check diagonals if you wanted
     x = node.x-1;
     y = node.y;
     pushIfTraversable(x, y, node, openList, closedList);
     
-    // x = node.x-1;
-    // y = node.y-1;
-    // pushIfTraversable(x, y, node, openList, closedList);
-
     x = node.x;
     y = node.y-1;
     pushIfTraversable(x, y, node, openList, closedList);
-
-    // x = node.x+1;
-    // y = node.y-1;
-    // pushIfTraversable(x, y, node, openList, closedList);
 
     x = node.x+1;
     y = node.y;
     pushIfTraversable(x, y, node, openList, closedList);
 
-    // x = node.x+1;
-    // y = node.y+1;
-    // pushIfTraversable(x, y, node, openList, closedList);
-
     x = node.x;
     y = node.y+1;
     pushIfTraversable(x, y, node, openList, closedList);
-
-    // x = node.x-1;
-    // y = node.y+1;
-    // pushIfTraversable(x, y, node, openList, closedList);
 }
 
 function pushIfTraversable(x, y, parentNode, openList, closedList) {
     var squareIsOnGrid = typeof g_grid.squares[x] != 'undefined' && 
-	g_grid.squares[x][y] != 'undefined';
-    var squareIsNotWall = g_grid.squares[x][y] != WALL;
+	typeof g_grid.squares[x][y] != 'undefined';
 
-    if (squareIsOnGrid && squareIsNotWall) {
+    if (squareIsOnGrid && g_grid.squares[x][y] != WALL) {
 	var newNode = new Node(x, y, parentNode);
 
 	// -1 will be returned if the node is not in the list
@@ -94,8 +78,9 @@ function pushIfTraversable(x, y, parentNode, openList, closedList) {
 	    // if an adjacent square is already in the open list, make sure the path
 	    // we took to get there isn't faster than the path that got it in there
 	    var indexInOpenList = listContainsNode(openList, newNode);
-	    if (indexInOpenList != -1 && (newNode.G < openList[indexInOpenList].G)) {
-		openList[indexInOpenList] = newNode;
+	    if (indexInOpenList != -1) {
+		if (newNode.G < openList[indexInOpenList].G)
+		    openList[indexInOpenList] = newNode;
 	    }
 	    else {
 		openList.push(newNode);

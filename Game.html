@@ -15,10 +15,15 @@
   </head>
 
   <body onload="startGame()">
-    <div id="container">
-      <canvas id="canvas" width="640" height="520"></canvas>
+    <div id="instructions">
+      A-STAR <br /><br />
+      Green - start &nbsp&nbsp | &nbsp&nbsp Red - end &nbsp&nbsp | &nbsp&nbsp Black- wall
     </div>
-    <button type="button" onclick="eraseGrid()">Clear!</button>
-    <button type="button" onclick="findPath()">Find path!</button>
+    <div id="container">
+      <canvas id="canvas" width="641" height="520"></canvas>
+    </div>
+    <button type="button" onclick="clearGrid()">Clear!</button>
+    <!-- we set the onclick in game.js -->
+    <button id="solvebutton" type="button">Find path!</button>
   </body>
 </html>

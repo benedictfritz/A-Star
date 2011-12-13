@@ -20,6 +20,9 @@ var Grid = function(ctx, width, height) {
     this.squares = new Array(this.numColumns);
     this.numRows = Math.floor(this.height/this.squareLength);
 
+    // state determining what button is displayed
+    this.solvable = true;
+
     for (var i=0; i < this.squares.length; i++) {
 	this.squares[i] = new Array(this.numRows);
 	for(var j=0; j < this.numRows; j++) {
@@ -147,7 +150,17 @@ var Grid = function(ctx, width, height) {
 	endSquare = null;
 	for (var column = 0; column < this.numColumns; column++) {
 	    for (var row = 0; row < this.numRows; row++) {
-		this.squares[column][row] = this.EMPTY;
+		this.squares[column][row] = EMPTY;
+	    }
+	}
+    };
+
+    this.clearPath = function() {
+	for (var column = 0; column < this.numColumns; column++) {
+	    for (var row = 0; row < this.numRows; row++) {
+		if (this.squares[column][row] == PATH) {
+		    this.squares[column][row] = EMPTY;
+		}
 	    }
 	}
     };

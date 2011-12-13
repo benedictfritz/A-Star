@@ -29,8 +29,35 @@ function startGame() {
     g_game.start();
 }
 
-function eraseGrid() {
+function clearGrid() {
     g_grid.clear();
+}
+
+function clearPath() {
+    g_grid.clearPath();
+}
+
+function updateSolveButton() {
+    // check if there are path elements in the grid. if there are, the grid
+    // is not in a state where it can be solved by the program, and buttons
+    // should be adjusted accordingly
+    var solvable = true;
+    for (var column = 0; column < g_grid.numColumns; column++) {
+	for (var row = 0; row < g_grid.numRows; row++) {
+	    if (g_grid.squares[column][row] == PATH) {
+		solvable = false;
+	    }
+	}
+    }
+
+    if (solvable) {
+	$("solvebutton").innerHTML = "Find path!";
+	$("solvebutton").onclick = findPath;
+    }
+    else {
+	$("solvebutton").innerHTML = "Clear path!";
+	$("solvebutton").onclick = clearPath;
+    }
 }
 
 function Game() {
@@ -40,7 +67,9 @@ function Game() {
 	// update each game object
 	g_eng.objectManager.updateAll();
 	updateFinish = Date.now();
-	
+
+	updateSolveButton();
+
 	// clear screen and redraw objects
 	g_eng.ctx.clearRect(0, 0, g_eng.width, g_eng.height);
 	g_eng.objectManager.drawAll();
